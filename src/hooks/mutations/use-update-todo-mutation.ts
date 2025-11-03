@@ -11,35 +11,34 @@ export function useUpdateTodoMutation() {
     mutationFn: updateTodo,
     onMutate: async (updatedTodo) => {
       // 낙관적 업데이트 전, 데이터 요청이 있다면 취소
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.todo.list });
-
-      const prevTodos = queryClient.getQueryData<Todo[]>(QUERY_KEYS.todo.list);
-      if (!prevTodos) return { prevTodos: [] };
-
-      // 낙관적 업데이트
-      queryClient.setQueryData<Todo[]>(QUERY_KEYS.todo.list, (prevTodos) => {
-        if (!prevTodos) return [];
-        return prevTodos.map((prevTodo) =>
-          prevTodo.id === updatedTodo.id
-            ? { ...prevTodo, ...updatedTodo }
-            : prevTodo,
-        );
+      await queryClient.cancelQueries({
+        queryKey: QUERY_KEYS.todo.detail(updatedTodo.id),
       });
 
+      // 업데이트 이전의 캐시 데이터
+      const prevTodo = queryClient.getQueryData<Todo>(
+        QUERY_KEYS.todo.detail(updatedTodo.id),
+      );
+
+      // 개별 캐시 데이터 업데이트
+      queryClient.setQueryData<Todo>(
+        QUERY_KEYS.todo.detail(updatedTodo.id),
+        (prevTodo) => {
+          if (!prevTodo) return; // 이전 데이터가 없다면 캐시 데이터를 업데이트 하지 않음
+          return { ...prevTodo, ...updatedTodo };
+        },
+      );
+
       // 낙관적 업데이트 실패 시, 이전 데이터로 롤백
-      return { prevTodos };
+      return { prevTodo };
     },
     onError: (_error, _variable, context) => {
-      if (context && context.prevTodos) {
-        queryClient.setQueryData<Todo[]>(
-          QUERY_KEYS.todo.list,
-          context.prevTodos,
+      if (context && context.prevTodo) {
+        queryClient.setQueryData<Todo>(
+          QUERY_KEYS.todo.detail(context.prevTodo.id),
+          context.prevTodo,
         );
       }
-    },
-    // 캐시데이터 무효화(데이터 무결성 확보)
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.todo.list });
     },
   });
 }

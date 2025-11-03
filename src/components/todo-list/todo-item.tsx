@@ -3,9 +3,13 @@ import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useDeleteTodoMutation } from "@/hooks/mutations/use-delete-todo-mutation";
 import { useUpdateTodoMutation } from "@/hooks/mutations/use-update-todo-mutation";
-import type { Todo } from "@/types";
+import { useTodoByIdData } from "@/hooks/queries/use-todo-by-id-data";
 
-export default function TodoItem({ id, content, isDone }: Todo) {
+export default function TodoItem({ id }: { id: string }) {
+  const { data: todo } = useTodoByIdData(id, "LIST");
+  if (!todo) throw new Error("Todo not found");
+  const { content, isDone } = todo;
+
   const { mutate: updateTodo } = useUpdateTodoMutation();
   const { mutate: deleteTodo, isPending: isDeleteTodoPending } =
     useDeleteTodoMutation();

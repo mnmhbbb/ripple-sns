@@ -9,10 +9,19 @@ export function useDeleteTodoMutation() {
   return useMutation({
     mutationFn: deleteTodo,
     onSuccess: (deletedTodo: Todo) => {
-      queryClient.setQueryData<Todo[]>(QUERY_KEYS.todo.list, (prevTodos) => {
-        if (!prevTodos) return [];
-        return prevTodos.filter((todo) => todo.id !== deletedTodo.id);
+      // 개별 캐시 데이터 삭제
+      queryClient.removeQueries({
+        queryKey: QUERY_KEYS.todo.detail(deletedTodo.id),
       });
+
+      // QUERY_KEYS.todo.list에서 아이디 삭제
+      queryClient.setQueryData<string[]>(
+        QUERY_KEYS.todo.list,
+        (prevTodoIds) => {
+          if (!prevTodoIds) return [];
+          return prevTodoIds.filter((id) => id !== deletedTodo.id);
+        },
+      );
     },
   });
 }

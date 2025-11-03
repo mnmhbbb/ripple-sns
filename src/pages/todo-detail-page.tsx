@@ -5,7 +5,7 @@ import { useTodoByIdData } from "@/hooks/queries/use-todo-by-id-data";
 export default function TodoDetailPage() {
   const { id } = useParams<{ id: string }>();
 
-  const { data, isLoading, error } = useTodoByIdData(id ?? "");
+  const { data, isLoading, error } = useTodoByIdData(id ?? "", "DETAIL");
 
   if (error) return <div>오류가 발생했습니다.</div>;
   if (isLoading) return <div>로딩 중 입니다 ...</div>;
