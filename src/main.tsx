@@ -6,12 +6,15 @@ import { BrowserRouter } from "react-router";
 import "./index.css";
 import App from "./App.tsx";
 
+import { Toaster } from "@/components/ui/sonner.tsx";
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
+      <Toaster />
       <App />
     </QueryClientProvider>
   </BrowserRouter>,

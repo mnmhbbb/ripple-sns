@@ -1,18 +1,36 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 import githubLogo from "@/assets/github-mark.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSignInWithOAuth } from "@/hooks/mutations/use-sign-in-with-oauth";
 import { useSignInWithPassword } from "@/hooks/mutations/use-sign-in-with-password";
+import { generateErrorMessage } from "@/lib/error";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { mutate: signInWithPassword } = useSignInWithPassword();
-  const { mutate: signInWithOAuth } = useSignInWithOAuth();
+  // 에러 발생 시 비밀번호 초기화하는 콜백함수 전달(ui만 담당)
+  const { mutate: signInWithPassword } = useSignInWithPassword({
+    onError: (error: Error) => {
+      const message = generateErrorMessage(error);
+      toast.error(message, {
+        position: "top-center",
+      });
+      setPassword("");
+    },
+  });
+  const { mutate: signInWithOAuth } = useSignInWithOAuth({
+    onError: (error: Error) => {
+      const message = generateErrorMessage(error);
+      toast.error(message, {
+        position: "top-center",
+      });
+    },
+  });
 
   const handleSignInWithPasswordClick = () => {
     if (email.trim() === "" || password.trim() === "") return;
