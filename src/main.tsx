@@ -8,7 +8,14 @@ import App from "./App.tsx";
 
 import { Toaster } from "@/components/ui/sonner.tsx";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
