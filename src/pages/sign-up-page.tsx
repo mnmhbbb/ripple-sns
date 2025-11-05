@@ -11,7 +11,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { mutate: signUp } = useSignUp({
+  const { mutate: signUp, isPending: isSigningUpPending } = useSignUp({
     onError: (error) => {
       const message = generateErrorMessage(error);
       toast.error(message, {
@@ -33,12 +33,14 @@ export default function SignUpPage() {
       <div className="flex flex-col gap-2">
         <Input
           type="email"
+          disabled={isSigningUpPending}
           placeholder="example@abc.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           type="password"
+          disabled={isSigningUpPending}
           placeholder="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -46,7 +48,11 @@ export default function SignUpPage() {
       </div>
 
       <div>
-        <Button className="w-full" onClick={handleSignUpClick}>
+        <Button
+          className="w-full"
+          onClick={handleSignUpClick}
+          disabled={isSigningUpPending}
+        >
           회원가입
         </Button>
       </div>

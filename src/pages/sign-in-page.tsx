@@ -14,7 +14,10 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
 
   // 에러 발생 시 비밀번호 초기화하는 콜백함수 전달(ui만 담당)
-  const { mutate: signInWithPassword } = useSignInWithPassword({
+  const {
+    mutate: signInWithPassword,
+    isPending: isSigningInWithPasswordPending,
+  } = useSignInWithPassword({
     onError: (error: Error) => {
       const message = generateErrorMessage(error);
       toast.error(message, {
@@ -23,14 +26,15 @@ export default function SignInPage() {
       setPassword("");
     },
   });
-  const { mutate: signInWithOAuth } = useSignInWithOAuth({
-    onError: (error: Error) => {
-      const message = generateErrorMessage(error);
-      toast.error(message, {
-        position: "top-center",
-      });
-    },
-  });
+  const { mutate: signInWithOAuth, isPending: isSigningInWithOAuthPending } =
+    useSignInWithOAuth({
+      onError: (error: Error) => {
+        const message = generateErrorMessage(error);
+        toast.error(message, {
+          position: "top-center",
+        });
+      },
+    });
 
   const handleSignInWithPasswordClick = () => {
     if (email.trim() === "" || password.trim() === "") return;
@@ -42,6 +46,9 @@ export default function SignInPage() {
     signInWithOAuth("github");
   };
 
+  const isPending =
+    isSigningInWithPasswordPending || isSigningInWithOAuthPending;
+
   return (
     <div className="flex flex-col gap-8">
       <div className="text-2xl font-bold">로그인</div>
@@ -52,23 +59,30 @@ export default function SignInPage() {
           placeholder="example@abc.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={isPending}
         />
         <Input
           type="password"
           placeholder="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          disabled={isPending}
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <Button className="w-full" onClick={handleSignInWithPasswordClick}>
+        <Button
+          className="w-full"
+          onClick={handleSignInWithPasswordClick}
+          disabled={isPending}
+        >
           로그인
         </Button>
         <Button
           className="w-full"
           variant="outline"
           onClick={handleSignInWithGitHubClick}
+          disabled={isPending}
         >
           <img src={githubLogo} alt="GitHub" className="h-4 w-4" />
           GitHub 로그인
