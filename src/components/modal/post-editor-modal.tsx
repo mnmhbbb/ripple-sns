@@ -11,6 +11,7 @@ import {
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useCreatePost } from "@/hooks/mutations/post/use-create-post";
 import { generateErrorMessage } from "@/lib/error";
+import { useOpenAlertModal } from "@/store/alert-modal";
 import { usePostEditorModal } from "@/store/post-editor-modal";
 import { useSession } from "@/store/session";
 
@@ -21,8 +22,9 @@ type Image = {
 
 export default function PostEditorModal() {
   const session = useSession();
-
   const { isOpen, close } = usePostEditorModal();
+  const openAlertModal = useOpenAlertModal();
+
   const { mutate: createPost, isPending: isCreatingPostPending } =
     useCreatePost({
       onSuccess: () => {
@@ -43,6 +45,16 @@ export default function PostEditorModal() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCloseModal = () => {
+    if (content !== "" || images.length !== 0) {
+      openAlertModal({
+        title: "게시글 작성이 마무리 되지 않았습니다",
+        description: "작성 중인 내용이 있습니다. 정말 닫으시겠습니까?",
+        onPositive: () => {
+          close();
+        },
+      });
+      return;
+    }
     close();
   };
 
