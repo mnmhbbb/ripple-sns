@@ -1,0 +1,6 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib", // TypeScript 언어 서버가 사용할 TypeScript 라이브러리 경로 지정
+  // 내장 TypeScript가 아닌 프로젝트 폴더의 node_modules/typescript/lib 안에 있는 타입스크립트 엔진 사용
+  "typescript.preferences.importModuleSpecifier": "non-relative", // TypeScript에서 상대 경로 대신 절대 경로 사용 선호
+  "javascript.preferences.importModuleSpecifier": "non-relative" // JavaScript에서 상대 경로 대신 절대 경로 사용 선호"
+}
