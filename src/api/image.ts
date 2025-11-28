@@ -22,3 +22,20 @@ export async function uploadImage({
 
   return publicUrl;
 }
+
+// 특정 경로 밑에 있는 모든 이미지 삭제
+// 현재 이미지 파일을 user_id/post_id/이미지 위치에 저장하기 때문
+export async function deleteImagesInPath(path: string) {
+  // 1. 특정 경로 밑에 있는 모든 이미지 목록 가져오기
+  const { data: files, error: fetchFilesError } = await supabase.storage
+    .from(BUCKET_NAME)
+    .list(path);
+  if (fetchFilesError) throw fetchFilesError;
+
+  // 2. 이미지 삭제
+  const { error: removeError } = await supabase.storage
+    .from(BUCKET_NAME)
+    .remove(files.map((file) => `${path}/${file.name}`));
+
+  if (removeError) throw removeError;
+}
