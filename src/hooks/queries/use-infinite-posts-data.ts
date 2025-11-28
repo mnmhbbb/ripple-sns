@@ -12,7 +12,7 @@ export function useInfinitePostsData() {
     queryKey: QUERY_KEYS.post.list,
     queryFn: async ({ pageParam }) => {
       const from = pageParam * PAGE_SIZE;
-      const to = from + PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
 
       const posts = await fetchPosts({ from, to });
       // 개별 포스트 데이터를 캐시에 저장
