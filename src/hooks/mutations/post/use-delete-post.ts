@@ -5,7 +5,7 @@ import { deletePost } from "@/api/post";
 import { QUERY_KEYS } from "@/lib/constants";
 import type { UseMutationCallbacks } from "@/types";
 
-export function useDeletePost(callbacks?: UseMutationCallbacks) {
+export default function useDeletePost(callbacks?: UseMutationCallbacks) {
   const queryClient = useQueryClient();
 
   return useMutation({

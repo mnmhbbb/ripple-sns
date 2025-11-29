@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchPostById } from "@/api/post";
 import { QUERY_KEYS } from "@/lib/constants";
 
-export function usePostByIdData({
+export default function usePostByIdData({
   postId,
   type,
 }: {

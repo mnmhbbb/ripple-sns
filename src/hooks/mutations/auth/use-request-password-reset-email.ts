@@ -3,7 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { requestPasswordResetEmail } from "@/api/auth";
 import type { UseMutationCallbacks } from "@/types";
 
-export function useRequestPasswordResetEmail(callbacks?: UseMutationCallbacks) {
+export default function useRequestPasswordResetEmail(
+  callbacks?: UseMutationCallbacks,
+) {
   return useMutation({
     mutationFn: requestPasswordResetEmail,
     onError: (error) => {

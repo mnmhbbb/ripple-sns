@@ -4,7 +4,7 @@ import { createPostWithImages } from "@/api/post";
 import { QUERY_KEYS } from "@/lib/constants";
 import type { UseMutationCallbacks } from "@/types";
 
-export function useCreatePost(callbacks?: UseMutationCallbacks) {
+export default function useCreatePost(callbacks?: UseMutationCallbacks) {
   const queryClient = useQueryClient();
 
   return useMutation({

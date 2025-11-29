@@ -5,7 +5,7 @@ import { createProfile, fetchProfile } from "@/api/profile";
 import { QUERY_KEYS } from "@/lib/constants";
 import { useSession } from "@/store/session";
 
-export function useProfileData(userId?: string) {
+export default function useProfileData(userId?: string) {
   const session = useSession();
   const isMine = session?.user?.id === userId;
 

@@ -5,8 +5,8 @@ import { toast } from "sonner";
 import githubLogo from "@/assets/github-mark.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSignInWithOAuth } from "@/hooks/mutations/auth/use-sign-in-with-oauth";
-import { useSignInWithPassword } from "@/hooks/mutations/auth/use-sign-in-with-password";
+import useSignInWithOAuth from "@/hooks/mutations/auth/use-sign-in-with-oauth";
+import useSignInWithPassword from "@/hooks/mutations/auth/use-sign-in-with-password";
 import { generateErrorMessage } from "@/lib/error";
 
 export default function SignInPage() {

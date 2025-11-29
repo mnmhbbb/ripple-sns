@@ -10,7 +10,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { usePostByIdData } from "@/hooks/queries/use-post-by-id-data";
+import usePostByIdData from "@/hooks/queries/use-post-by-id-data";
 import { formatTimeAgo } from "@/lib/time";
 import { useSession } from "@/store/session";
 

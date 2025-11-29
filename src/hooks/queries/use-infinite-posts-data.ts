@@ -5,7 +5,7 @@ import { QUERY_KEYS } from "@/lib/constants";
 
 const PAGE_SIZE = 5;
 
-export function useInfinitePostsData() {
+export default function useInfinitePostsData() {
   const queryClient = useQueryClient();
 
   return useInfiniteQuery({

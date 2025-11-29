@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import Fallback from "@/components/fallback";
 import Loader from "@/components/loader";
 import PostItem from "@/components/post/post-item";
-import { useInfinitePostsData } from "@/hooks/queries/use-infinite-posts-data";
+import useInfinitePostsData from "@/hooks/queries/use-infinite-posts-data";
 
 export default function PostFeed() {
   const { data, error, isPending, fetchNextPage, isFetchingNextPage } =

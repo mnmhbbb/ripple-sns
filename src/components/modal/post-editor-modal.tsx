@@ -9,8 +9,8 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { useCreatePost } from "@/hooks/mutations/post/use-create-post";
-import { useUpdatePost } from "@/hooks/mutations/post/use-update-post";
+import useCreatePost from "@/hooks/mutations/post/use-create-post";
+import useUpdatePost from "@/hooks/mutations/post/use-update-post";
 import { generateErrorMessage } from "@/lib/error";
 import { useOpenAlertModal } from "@/store/alert-modal";
 import { usePostEditorModal } from "@/store/post-editor-modal";

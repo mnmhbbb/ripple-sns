@@ -4,7 +4,7 @@ import { updatePost } from "@/api/post";
 import { QUERY_KEYS } from "@/lib/constants";
 import type { Post, UseMutationCallbacks } from "@/types";
 
-export function useUpdatePost(callbacks?: UseMutationCallbacks) {
+export default function useUpdatePost(callbacks?: UseMutationCallbacks) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: updatePost,
