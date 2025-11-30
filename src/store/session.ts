@@ -22,7 +22,7 @@ const useSessionStore = create(
       },
     })),
     {
-      name: "sessionStore",
+      name: "SessionStore",
     },
   ),
 );

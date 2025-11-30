@@ -42,7 +42,7 @@ const usePostEditorModalStore = create(
       },
     })),
     {
-      name: "postEditorModalStore",
+      name: "PostEditorModalStore",
     },
   ),
 );
