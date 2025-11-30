@@ -20,7 +20,7 @@ export default function ProfileButton() {
         <img
           src={profile?.avatar_url || defaultAvatar}
           alt={`${profile?.nickname}의 프로필 이미지`}
-          className="h-6 w-6 cursor-pointer object-cover"
+          className="h-6 w-6 cursor-pointer rounded-full object-cover"
         />
       </PopoverTrigger>
 
