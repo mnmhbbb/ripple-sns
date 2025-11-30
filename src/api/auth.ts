@@ -2,6 +2,17 @@ import type { Provider } from "@supabase/supabase-js";
 
 import supabase from "@/lib/supabase";
 
+export async function signOut() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    // 로컬스토리지에 저장된 세션 날리기
+    await supabase.auth.signOut({
+      scope: "local",
+    });
+  }
+}
+
 export async function signUp({
   email,
   password,
