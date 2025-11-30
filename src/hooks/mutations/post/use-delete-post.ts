@@ -3,10 +3,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteImagesInPath } from "@/api/image";
 import { deletePost } from "@/api/post";
 import { QUERY_KEYS } from "@/lib/constants";
+import { useSession } from "@/store/session";
 import type { UseMutationCallbacks } from "@/types";
 
 export default function useDeletePost(callbacks?: UseMutationCallbacks) {
   const queryClient = useQueryClient();
+  const session = useSession();
 
   return useMutation({
     mutationFn: deletePost,
@@ -19,6 +21,9 @@ export default function useDeletePost(callbacks?: UseMutationCallbacks) {
       }
 
       queryClient.resetQueries({ queryKey: QUERY_KEYS.post.list });
+      queryClient.resetQueries({
+        queryKey: QUERY_KEYS.post.userList(session!.user.id),
+      });
     },
     onError: (error) => {
       if (callbacks?.onError) callbacks.onError(error);
