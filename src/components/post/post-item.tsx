@@ -110,13 +110,18 @@ export default function PostItem({
         />
 
         {/* 3-2. 댓글 버튼 */}
-        {type === "FEED" && (
+        {type === "FEED" ? (
           <Link to={`/post/${post.id}`}>
             <div className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-xl border p-2 px-4 text-sm">
               <MessageCircle className="h-4 w-4" />
-              <span>댓글 달기</span>
+              <span>{post.comment_count}</span>
             </div>
           </Link>
+        ) : (
+          <div className="hover:bg-muted flex items-center gap-2 rounded-xl border p-2 px-4 text-sm">
+            <MessageCircle className="h-4 w-4" />
+            <span>{post.comment_count}</span>
+          </div>
         )}
       </div>
     </div>
