@@ -11,6 +11,24 @@ export async function fetchComments(postId: number) {
   return data;
 }
 
+// 댓글 카운트 증가 RPC 함수 호출
+export async function incrementCommentCount(postId: number) {
+  const { error } = await supabase.rpc("increment_comment_count", {
+    p_post_id: postId,
+  });
+
+  if (error) throw error;
+}
+
+// 댓글 카운트 감소 RPC 함수 호출
+export async function decrementCommentCount(postId: number) {
+  const { error } = await supabase.rpc("decrement_comment_count", {
+    p_post_id: postId,
+  });
+
+  if (error) throw error;
+}
+
 export async function createComment({
   content,
   postId,
@@ -34,6 +52,10 @@ export async function createComment({
     .single();
 
   if (error) throw error;
+
+  // 댓글 생성 성공 시 comment_count 증가
+  await incrementCommentCount(postId);
+
   return data;
 }
 
@@ -64,5 +86,9 @@ export async function deleteComment(id: number) {
     .single();
 
   if (error) throw error;
+
+  // 댓글 삭제 성공 시 comment_count 감소
+  await decrementCommentCount(data.post_id);
+
   return data;
 }
