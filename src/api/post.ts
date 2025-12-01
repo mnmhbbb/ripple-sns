@@ -15,7 +15,9 @@ export async function fetchPosts({
 }) {
   const request = supabase
     .from("post")
-    .select("*, author: profile!author_id (*), myLiked: like!post_id (*)") // author 컬럼에 profile.author_id와 일치하는 모든 행을 가져옴, myLiked 컬럼에 like.post_id와 일치하는 모든 행을 가져옴
+    .select("*, author: profile!author_id (*), myLiked: like!post_id (*)")
+    // author 필드에 post.author_id = profile.id 조건으로 조인한 profile 레코드를 중첩 객체로 가져옴,
+    // myLiked 필드에 post.id = like.post_id 조건으로 조인한 like 레코드들을 배열로 가져옴
     .eq("like.user_id", userId) // like 테이블에서 user_id가 userId와 일치하는 모든 행을 가져옴(본인이 좋아요를 눌렀는지 여부)
     .order("created_at", { ascending: false })
     .range(from, to);
@@ -41,7 +43,9 @@ export async function fetchPostById({
 }) {
   const { data, error } = await supabase
     .from("post")
-    .select("*, author: profile!author_id (*), myLiked: like!post_id (*)") // author 컬럼에 profile.author_id와 일치하는 모든 행을 가져옴, myLiked 컬럼에 like.post_id와 일치하는 모든 행을 가져옴
+    .select("*, author: profile!author_id (*), myLiked: like!post_id (*)")
+    // author 필드에 post.author_id = profile.id 조건으로 조인한 profile 레코드를 중첩 객체로 가져옴,
+    // myLiked 필드에 post.id = like.post_id 조건으로 조인한 like 레코드들을 배열로 가져옴
     .eq("like.user_id", userId) // like 테이블에서 user_id가 userId와 일치하는 모든 행을 가져옴(본인이 좋아요를 눌렀는지 여부)
     .eq("id", postId)
     .single();
