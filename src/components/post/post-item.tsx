@@ -34,7 +34,9 @@ export default function PostItem({
   const isMine = userId === post.author_id;
 
   return (
-    <div className={`flex flex-col gap-4 ${type === "FEED" && "border-b"}`}>
+    <div
+      className={`flex flex-col gap-4 pb-5 ${type === "FEED" && "border-b"}`}
+    >
       {/* 1. 유저 정보, 수정/삭제 버튼 */}
       <div className="flex justify-between">
         {/* 1-1. 유저 정보 */}
