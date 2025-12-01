@@ -105,6 +105,7 @@ export type Database = {
       post: {
         Row: {
           author_id: string
+          comment_count: number
           content: string
           created_at: string
           id: number
@@ -113,6 +114,7 @@ export type Database = {
         }
         Insert: {
           author_id?: string
+          comment_count?: number
           content: string
           created_at?: string
           id?: number
@@ -121,6 +123,7 @@ export type Database = {
         }
         Update: {
           author_id?: string
+          comment_count?: number
           content?: string
           created_at?: string
           id?: number
@@ -166,6 +169,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      decrement_comment_count: {
+        Args: { p_post_id: number }
+        Returns: undefined
+      }
+      increment_comment_count: {
+        Args: { p_post_id: number }
+        Returns: undefined
+      }
       toggle_post_like: {
         Args: { p_post_id: number; p_user_id: string }
         Returns: boolean
