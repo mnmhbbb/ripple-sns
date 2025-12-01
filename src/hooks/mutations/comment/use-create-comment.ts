@@ -20,7 +20,7 @@ export default function useCreateComment(callbacks?: UseMutationCallbacks) {
         (prevComments) => {
           if (!prevComments) throw new Error("댓글이 존재하지 않습니다.");
           if (!profile) throw new Error("프로필이 존재하지 않습니다.");
-          return [{ ...newComment, author: profile }, ...prevComments];
+          return [...prevComments, { ...newComment, author: profile }];
         },
       );
     },
