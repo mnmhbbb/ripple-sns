@@ -4,20 +4,30 @@ import Loader from "@/components/loader";
 import useCommentsData from "@/hooks/queries/use-comments-data";
 import type { Comment, NestedComment } from "@/types";
 
-function toNestedComment(comments?: Comment[]): NestedComment[] {
+function toNestedComment(comments: Comment[]): NestedComment[] {
   const result: NestedComment[] = [];
 
   comments?.forEach((comment) => {
-    if (!comment.parent_comment_id) {
+    // root_comment_id가 없으면 최상위 댓글임
+    if (!comment.root_comment_id) {
       result.push({ ...comment, children: [] });
     } else {
-      const parentCommentIndex = result.findIndex(
+      //
+      const rootCommentIndex = result.findIndex(
+        (c) => c.id === comment.root_comment_id,
+      );
+
+      const parentComment = comments.find(
         (c) => c.id === comment.parent_comment_id,
       );
-      result[parentCommentIndex].children.push({
+
+      if (rootCommentIndex === -1) return;
+      if (!parentComment) return;
+
+      result[rootCommentIndex].children.push({
         ...comment,
         children: [],
-        parentComment: result[parentCommentIndex],
+        parentComment,
       });
     }
   });
