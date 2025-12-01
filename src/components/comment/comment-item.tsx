@@ -8,9 +8,9 @@ import useDeleteComment from "@/hooks/mutations/comment/use-delete-comment";
 import { formatTimeAgo } from "@/lib/time";
 import { useOpenAlertModal } from "@/store/alert-modal";
 import { useSession } from "@/store/session";
-import type { Comment } from "@/types";
+import type { NestedComment } from "@/types";
 
-export default function CommentItem(props: Comment) {
+export default function CommentItem(props: NestedComment) {
   const session = useSession();
   const openAlertModal = useOpenAlertModal();
 
@@ -26,9 +26,14 @@ export default function CommentItem(props: Comment) {
   });
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isReply, setIsReply] = useState(false);
 
   const toggleIsEditing = () => {
     setIsEditing((prev) => !prev);
+  };
+
+  const toggleIsReply = () => {
+    setIsReply((prev) => !prev);
   };
 
   const handleDeleteClick = () => {
@@ -42,9 +47,12 @@ export default function CommentItem(props: Comment) {
   };
 
   const isMine = session?.user.id === props.author_id;
+  const RootComment = props.parentComment === undefined;
 
   return (
-    <div className={"flex flex-col gap-8 border-b pb-5"}>
+    <div
+      className={`flex flex-col gap-8 pb-5 ${RootComment ? "border-b" : "ml-6"}`}
+    >
       <div className="flex items-start gap-4">
         <Link to={"#"}>
           <div className="flex h-full flex-col">
@@ -68,7 +76,12 @@ export default function CommentItem(props: Comment) {
           )}
           <div className="text-muted-foreground flex justify-between text-sm">
             <div className="flex items-center gap-2">
-              <div className="cursor-pointer hover:underline">댓글</div>
+              <div
+                className="cursor-pointer hover:underline"
+                onClick={toggleIsReply}
+              >
+                댓글
+              </div>
               <div className="bg-border h-[13px] w-[2px]"></div>
               <div>{formatTimeAgo(props.created_at)}</div>
             </div>
@@ -95,6 +108,17 @@ export default function CommentItem(props: Comment) {
           </div>
         </div>
       </div>
+      {isReply && (
+        <CommentEditor
+          type="REPLY"
+          postId={props.post_id}
+          parentCommentId={props.id}
+          onClose={toggleIsReply}
+        />
+      )}
+      {props.children.map((comment) => (
+        <CommentItem key={comment.id} {...comment} />
+      ))}
     </div>
   );
 }

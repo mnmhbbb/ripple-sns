@@ -18,13 +18,24 @@ type EditMode = {
   onClose: () => void; // 부모 컴포넌트인 CommentItem의 isEditing 상태를 false로 변경하기 위해
 };
 
-type Props = CreateMode | EditMode;
+type ReplyMode = {
+  type: "REPLY";
+  postId: number;
+  parentCommentId: number;
+  onClose: () => void;
+};
+
+type Props = CreateMode | EditMode | ReplyMode;
 
 export default function CommentEditor(props: Props) {
   const { mutate: createComment, isPending: isCreateCommentPending } =
     useCreateComment({
       onSuccess: () => {
         setContent("");
+        // 대댓글모드였다면 작성 성공 후 입력창 닫기
+        if (props.type === "REPLY") {
+          props.onClose();
+        }
       },
       onError: () => {
         toast.error("댓글 작성에 실패했습니다.", {
@@ -61,6 +72,12 @@ export default function CommentEditor(props: Props) {
         content,
         postId: props.postId,
       });
+    } else if (props.type === "REPLY") {
+      createComment({
+        content,
+        postId: props.postId,
+        parentCommentId: props.parentCommentId,
+      });
     } else {
       updateComment({
         id: props.commentId,
@@ -79,11 +96,12 @@ export default function CommentEditor(props: Props) {
         disabled={isPending}
       />
       <div className="flex justify-end gap-2">
-        {props.type === "EDIT" && (
-          <Button variant="outline" onClick={() => props.onClose()}>
-            취소
-          </Button>
-        )}
+        {props.type === "EDIT" ||
+          (props.type === "REPLY" && (
+            <Button variant="outline" onClick={() => props.onClose()}>
+              취소
+            </Button>
+          ))}
         <Button onClick={handleSubmitClick} disabled={isPending}>
           작성
         </Button>

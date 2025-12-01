@@ -14,13 +14,15 @@ export async function fetchComments(postId: number) {
 export async function createComment({
   content,
   postId,
+  parentCommentId,
 }: {
   content: string;
   postId: number;
+  parentCommentId?: number;
 }) {
   const { data, error } = await supabase
     .from("comment")
-    .insert({ content, post_id: postId })
+    .insert({ content, post_id: postId, parent_comment_id: parentCommentId })
     .select()
     .single();
 
