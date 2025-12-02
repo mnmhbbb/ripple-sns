@@ -1,8 +1,8 @@
-import { SunIcon } from "lucide-react";
 import { Link, Outlet } from "react-router";
 
 import logo from "@/assets/logo.png";
 import ProfileButton from "@/components/layout/header/profile-button";
+import ThemeButton from "@/components/layout/header/theme-button";
 
 export default function GlobalLayout() {
   return (
@@ -18,9 +18,7 @@ export default function GlobalLayout() {
             <div className="font-bold">ripple sns</div>
           </Link>
           <div className="flex items-center gap-2">
-            <div className="hover:bg-muted cursor-pointer rounded-full p-2">
-              <SunIcon className="size-4" />
-            </div>
+            <ThemeButton />
             <ProfileButton />
           </div>
         </div>
