@@ -20,9 +20,9 @@ export async function incrementCommentCount(postId: number) {
   if (error) throw error;
 }
 
-// 댓글 카운트 감소 RPC 함수 호출
-export async function decrementCommentCount(postId: number) {
-  const { error } = await supabase.rpc("decrement_comment_count", {
+// 댓글 개수 재계산 RPC 함수 호출 (삭제 후 실제 남은 댓글 개수로 업데이트)
+export async function recalculateCommentCount(postId: number) {
+  const { error } = await supabase.rpc("recalculate_comment_count", {
     p_post_id: postId,
   });
 
@@ -87,8 +87,8 @@ export async function deleteComment(id: number) {
 
   if (error) throw error;
 
-  // 댓글 삭제 성공 시 comment_count 감소
-  await decrementCommentCount(data.post_id);
+  // 삭제 후 실제 남은 댓글 개수로 재계산
+  await recalculateCommentCount(data.post_id);
 
   return data;
 }

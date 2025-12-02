@@ -169,11 +169,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      decrement_comment_count: {
+      increment_comment_count: {
         Args: { p_post_id: number }
         Returns: undefined
       }
-      increment_comment_count: {
+      recalculate_comment_count: {
         Args: { p_post_id: number }
         Returns: undefined
       }
