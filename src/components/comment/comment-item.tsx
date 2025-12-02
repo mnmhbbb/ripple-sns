@@ -52,7 +52,7 @@ export default function CommentItem(props: NestedComment) {
 
   return (
     <div
-      className={`flex flex-col gap-8 pb-5 ${RootComment ? "border-b" : "ml-6"}`}
+      className={`flex flex-col gap-8 ${RootComment ? "border-b pb-5" : "ml-6"}`}
     >
       <div className="flex items-start gap-4">
         <Link to={"#"}>
